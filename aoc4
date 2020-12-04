@@ -1,0 +1,40 @@
+#! /usr/bin/env perl
+
+my %colours = ("amb","" , "blu", "", "brn", "", "gry", "", "grn", "", "hzl", "", "oth", "");
+
+$file = shift @ARGV;
+open(INPUT, $file) or die "Cannot open $file: $!\n";
+{ local $/; @passport = split(/\n\n/, <INPUT>); }
+foreach(@passport) {
+    my @field = split(/\s+/, $_);
+    $length = @field;
+    if ($length == 7 && !grep(/cid:/, @field) || $length == 8) { $count++; }
+    my %data = ();
+    foreach(@field) {
+	($key, $val) = split(/:/,$_);
+	$data{$key} = $val;
+    }
+
+    my $num = $data{'hgt'};
+    my $cm = $num =~ /cm$/ ? 1 : 0;
+    $num =~ s/\D//g;
+
+    if ( 
+	($data{'byr'} =~ /^\d{4}$/ && 1920 <= $data{'byr'} && $data{'byr'} <= 2002)
+	 &&
+	 ($data{'iyr'} =~ /^\d{4}$/ && 2010 <= $data{'iyr'} && $data{'iyr'} <= 2020)
+	 &&
+	 ($data{'eyr'} =~ /^\d{4}$/ && 2020 <= $data{'eyr'} && $data{'eyr'} <= 2030)
+	 &&
+	 ($data{'hgt'} =~ /(in|cm)$/ && ( $cm == 1 && 150 <= $num && $num <= 193 || $cm == 0 && 59 <= $num && $num <= 76 ))
+	 && 
+	 $data{'hcl'} =~ /^#([0-9]|[a-f]){6}$/
+	 && 
+	 exists($colours{$data{'ecl'}})
+	 && 
+	 $data{'pid'} =~ /^[0-9]{9}$/
+	) 
+    { $cunt++; }
+}
+
+print "$count\n$cunt\n";

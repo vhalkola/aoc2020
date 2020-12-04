@@ -1,0 +1,12 @@
+#! /usr/bin/env perl
+
+$file = shift @ARGV;
+open(INPUT, $file) or die "Cannot open $file: $!\n";
+while (@fields = split(/-|:?\s/, <INPUT>)) {
+    my $c = () = $fields[3] =~ /\Q$fields[2]/g;
+    my @chars = split(//,$fields[3]);
+    if ($fields[0] <= $c && $c <= $fields[1]) { $count++; }
+    if (!($fields[2] eq $chars[$fields[0]-1]) != !($fields[2] eq $chars[$fields[1]-1])) { $cunt++; }
+}
+
+print "$count\n$cunt\n";
