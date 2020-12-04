@@ -6,5 +6,5 @@ B = A == 2020;
 prod1 = v(i(1))*v(j(1))
 C = outprod(A,ones(r,1)) + outprod(ones(r),v);
 D = C == 2020;
-[k,l,m] = find3d(D);
+[k(1),l(1),m(1)] = find3d(D);
 prod2 = v(k(1))*v(l(1))*v(m(1))
