@@ -1,0 +1,20 @@
+#! /usr/bin/env perl
+
+my $id = 0;
+my %seats;
+$file = shift @ARGV;
+open(INPUT, $file) or die "Cannot open $file: $!\n";
+while (($row, $column) = split(/\s/, <INPUT>)) {
+	$test = oct($row) * 8 + oct($column);
+	$id = $test > $id ? $test : $id;
+	$seats{$test} = "";
+}
+
+for my $i (1..$id) { 
+    if(exists($seats{$i-1}) && exists($seats{$i+1}) && !exists($seats{$i})) {
+	print "$i\n";
+	last;
+    }
+}
+
+print "$id\n";
