@@ -1,0 +1,17 @@
+#! /usr/bin/env perl
+
+$file = shift @ARGV;
+open(INPUT, $file) or die "Cannot open $file: $!\n";
+{ local $/; @group = split(/\n\n/, <INPUT>); }
+
+foreach(@group) {
+    my @answers = split(//, $_);
+    my %exists = ();
+    foreach(@answers) {
+	$exists{$_} = '';
+    }
+    delete($exists{"\n"});
+    $sum += (keys %exists);
+}
+
+print "$sum\n";

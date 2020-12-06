@@ -1,0 +1,15 @@
+#! /usr/bin/env perl
+
+use Quantum::Superpositions;
+
+$file = shift @ARGV;
+open(INPUT, $file) or die "Cannot open $file: $!\n";
+{ local $/; @group = split(/\n\n/, <INPUT>); }
+
+foreach(@group) {
+    my @answers = split;
+    print "@answers\n";
+    $sum += length(join '', eigenstates( all( map { any( split(//, $_) ) } @answers ) ) );
+}
+
+print "$sum\n";
