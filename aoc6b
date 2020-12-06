@@ -8,7 +8,6 @@ open(INPUT, $file) or die "Cannot open $file: $!\n";
 
 foreach(@group) {
     my @answers = split;
-    print "@answers\n";
     $sum += length(join '', eigenstates( all( map { any( split(//, $_) ) } @answers ) ) );
 }
 
